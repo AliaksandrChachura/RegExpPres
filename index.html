@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Patterns and flags</h1>
+					<p>A regular expression (also “regexp”, or just “reg”) consists of a pattern and optional flags.</p>
+					<p>The long syntax:</p>
+					<p>regexp = new RegExp("pattern", "flags");</p>
+					<p>the short one, using slashes "/":</p> 
+					<p>regexp = /pattern/;</p>
+					<p>regexp = /pattern/gmi;</p>
+					<ul>
+						<p>Flags:</p>
+						<li><b>i</b> - With this flag the search is case-insensitive: no difference between A and a</li>
+						<li>g - With this flag the search looks for all matches, without it – only the first one</li>
+						<li>m - Multiline mode</li>
+						<li>s - “Dotall” mode, allows . to match newlines</li>
+						<li>u - Enables full unicode support.</li>
+						<li>y - Sticky mode</li>
+					</ul>
+				</section>
+				<section>
+					<section>
+						<h1>Methods of RegExp and String</h1>
+						<p>str.search(reg)  –  It returns the position of the first match or -1 if none found</p>
+						<p>str.match(reg) without “g” flag - looks for the first match only</p>
+						<p>str.match(reg) with “g” flag  –  str.match returns an array of all matches, without </p>
+						<p>str.matchAll(regexp) - is used to find all matches with all details.</p>
+						<p>str.split(reg|substr, limit) –  Splits the string using the regexp (or a substring) as a delimiter.</p>
+						<p>str.replace(reg, str|func) - is a generic method for searching and replacing</p>
+						<p>regexp.exec(str) - should be called on a regexp, rather than on a string. It behaves differently depending on whether the regexp has the g flag.</p>
+						<p>regexp.test(str) - The method regexp.test(str) looks for a match and returns true/false whether it finds it.</p>
+					</section>
+					<section>
+						<h1>Special characters in replacement string</h1>
+						<p>$$ - "$"</p>
+						<p>$& - the whole match</p>
+						<p>$` - a part of the string before the match</p>
+						<p>$' - a part of the string after the match</p>
+						<p>$n - if n is a 1-2 digit number, then it means the contents of n-th parentheses counting from left to right, otherwise it means a parentheses with the given name</p>
+					</section>
+					<section>
+						<h1>The second argument can be a function.</h1>
+						<ul>
+							The function is called with arguments func(str, p1, p2, ..., pn, offset, input, groups):
+							<li>str – the match</li>
+							<li>p1, p2, ..., pn – contents of parentheses (if there are any)</li>
+							<li>offset – position of the match</li>
+							<li>input – the source string</li>
+							<li>groups – an object with named groups</li>
+							<p>If there are no parentheses in the regexp, then there are only 3 arguments: func(str, offset, input).</p>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h1>Character classes</h1>
+					<ul>
+						<p>\d – A digit: a character from 0 to 9.</p>
+						<p>\D – non-digits.</p>
+						<p>\s – A space symbol: that includes spaces, tabs, newlines.</p>
+						<p>\S – all but \s.</p>
+						<p>\w – A “wordly” character: either a letter of English alphabet or a digit or an underscore. Non-Latin letters (like cyrillic or hindi) do not belong to \w.</p>
+						<p>\W – all but \w.</p>
+						<p>. – any character if with the regexp 's' flag, otherwise any except a newline.</p>
+						<p>\b - It does not denote a character, but rather a boundary between characters.  For instance, \bJava\b matches Java in the string  Hello, Java!, but not in the script Hello, JavaScript!.</p>
+					</ul>
+				</section>
+				<section>
+					<h1>Sets and ranges [...]</h1>
+					<p>Sets - For instance, [eao] means any of the 3 characters: 'a', 'e', or 'o'.</p>
+					<p>Ranges - Square brackets may also contain character ranges. For instance, [a-z] is a character in range from a to z, and [0-5] is a digit from 0 to 5.</p>
+					<p>Excluding ranges - they are denoted by a caret character ^ at the start and match any character except the given ones.</p>
+				</section>
+				<section>
+					<section>
+					<h1>Quantifiers +, *, ? and {n}</h1>
+					<p>Quantity {n} - A quantifier is appended to a character (or a character class, or a [...] set etc) and specifies how many we need.</p>	
+					<ul>
+							Shorthands:
+							<li>+ - Means “one or more”, the same as {1,}.</li>
+							<li>? - Means “zero or one”, the same as {0,1}. In other words, it makes the symbol optional.</li>
+							<li>* - Means “zero or more”, the same as {0,}. That is, the character may repeat any times or be absent.</li>
+					</ul>
+					</section>
+					<section>
+						<h1>Greedy and lazy quantifiers</h1>
+						<p>Greedy search – in pattern “.+” look for information between two quotes.</p>
+						<p>Lazy mode – in pattern /".+?"/g look for information inside quotes</p>
+					</section>
+					<section>
+						<h1>String start ^ and finish $</h1>
+						<p>The caret '^' and dollar '$' characters have special meaning in a regexp. They are called “anchors”.</p>
+						<p>The caret ^ matches at the beginning of the text, and the dollar $ – in the end.</p>
+					</section>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
